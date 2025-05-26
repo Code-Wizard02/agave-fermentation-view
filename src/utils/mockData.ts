@@ -125,21 +125,29 @@ export const mockSensores: Sensor[] = [
 export const mockLotes: Lote[] = [
   {
     id: '1',
-    tinaId: '1',
-    tipoAgave: 'Cuishe',
-    fechaInicio: new Date('2024-05-20T08:00:00'),
-    fechaFin: null,
+    tina_id: '1',
+    numero_lote: 'L001',
+    tipo_agave: 'Cuishe',
+    fecha_inicio: new Date('2024-05-20T08:00:00'),
+    fecha_fin: null,
     estado: 'En proceso',
-    notas: 'Lote de agave cuishe de excelente calidad, proceso de fermentación natural iniciado.'
+    notas: 'Lote de agave cuishe de excelente calidad, proceso de fermentación natural iniciado.',
+    created_by: null,
+    created_at: new Date('2024-05-20T08:00:00'),
+    updated_at: new Date()
   },
   {
     id: '2',
-    tinaId: '2',
-    tipoAgave: 'Madre cuishe',
-    fechaInicio: new Date('2024-05-18T10:30:00'),
-    fechaFin: null,
+    tina_id: '2',
+    numero_lote: 'L002',
+    tipo_agave: 'Madre cuishe',
+    fecha_inicio: new Date('2024-05-18T10:30:00'),
+    fecha_fin: null,
     estado: 'En proceso',
-    notas: 'Agave madre cuishe silvestre, fermentación con levaduras nativas.'
+    notas: 'Agave madre cuishe silvestre, fermentación con levaduras nativas.',
+    created_by: null,
+    created_at: new Date('2024-05-18T10:30:00'),
+    updated_at: new Date()
   }
 ];
 
@@ -149,7 +157,7 @@ export const mockUsuarios: Usuario[] = [
     nombre: 'Juan Pérez',
     email: 'juan@mezcaleria.com',
     telefono: '+52 951 123 4567',
-    rol: 'Admin',
+    rol: 'admin',
     fechaCreacion: new Date('2024-01-15'),
     activo: true
   },
@@ -158,7 +166,7 @@ export const mockUsuarios: Usuario[] = [
     nombre: 'María González',
     email: 'maria@mezcaleria.com',
     telefono: '+52 951 765 4321',
-    rol: 'Operador',
+    rol: 'empleado',
     fechaCreacion: new Date('2024-02-20'),
     activo: true
   }
@@ -190,17 +198,27 @@ export const mockAlertas: Alerta[] = [
 export const mockValvulas: Valvula[] = [
   {
     id: '1',
-    tinaId: '1',
-    tipo: 'Frio',
+    tina_id: '1',
+    nombre: 'Válvula de Llenado',
+    tipo: 'Llenado',
     estado: 'Cerrado',
-    ultimaAccionPor: '1'
+    porcentaje_liquido: 84,
+    controlado_por: '1',
+    ultima_accion: new Date(),
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: '2',
-    tinaId: '1',
-    tipo: 'Caliente',
+    tina_id: '1',
+    nombre: 'Válvula de Vaciado',
+    tipo: 'Vaciado',
     estado: 'Cerrado',
-    ultimaAccionPor: '1'
+    porcentaje_liquido: 84,
+    controlado_por: '1',
+    ultima_accion: new Date(),
+    created_at: new Date(),
+    updated_at: new Date()
   }
 ];
 
