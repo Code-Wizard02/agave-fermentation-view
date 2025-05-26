@@ -8,7 +8,8 @@ import {
   AlertTriangle,
   Beaker,
   Users,
-  FileText
+  FileText,
+  LogOut
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,7 +23,9 @@ import {
   SidebarHeader,
   SidebarFooter
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 import { useLocation, Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const menuItems = [
   {
@@ -64,6 +67,15 @@ const menuItems = [
 
 export function AppSidebar() {
   const location = useLocation();
+  const { signOut, user } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   return (
     <Sidebar className="border-r border-mezcal-200">
@@ -77,6 +89,11 @@ export function AppSidebar() {
             <p className="text-xs text-mezcal-600">Sistema de Monitoreo</p>
           </div>
         </div>
+        {user && (
+          <div className="mt-2 text-xs text-mezcal-600">
+            Bienvenido, {user.email}
+          </div>
+        )}
       </SidebarHeader>
       
       <SidebarContent>
@@ -106,7 +123,16 @@ export function AppSidebar() {
       </SidebarContent>
       
       <SidebarFooter className="border-t border-mezcal-200 p-4">
-        <div className="text-xs text-mezcal-600 text-center">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleSignOut}
+          className="w-full border-mezcal-300 text-mezcal-700 hover:bg-mezcal-50"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Cerrar Sesión
+        </Button>
+        <div className="text-xs text-mezcal-600 text-center mt-2">
           © 2025 Monitor en Tinas
         </div>
       </SidebarFooter>

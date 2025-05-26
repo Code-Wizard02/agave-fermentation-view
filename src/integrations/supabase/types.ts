@@ -9,16 +9,192 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      ciclos_completados: {
+        Row: {
+          created_at: string
+          fecha_fin: string
+          fecha_inicio: string
+          id: string
+          lote_id: string | null
+          tina_id: string
+          tipo_agave: string
+        }
+        Insert: {
+          created_at?: string
+          fecha_fin?: string
+          fecha_inicio: string
+          id?: string
+          lote_id?: string | null
+          tina_id: string
+          tipo_agave: string
+        }
+        Update: {
+          created_at?: string
+          fecha_fin?: string
+          fecha_inicio?: string
+          id?: string
+          lote_id?: string | null
+          tina_id?: string
+          tipo_agave?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ciclos_completados_lote_id_fkey"
+            columns: ["lote_id"]
+            isOneToOne: false
+            referencedRelation: "lotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lotes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          estado: string
+          fecha_fin: string | null
+          fecha_inicio: string
+          id: string
+          notas: string | null
+          numero_lote: string
+          tina_id: string
+          tipo_agave: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          fecha_fin?: string | null
+          fecha_inicio?: string
+          id?: string
+          notas?: string | null
+          numero_lote: string
+          tina_id: string
+          tipo_agave: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          fecha_fin?: string | null
+          fecha_inicio?: string
+          id?: string
+          notas?: string | null
+          numero_lote?: string
+          tina_id?: string
+          tipo_agave?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          assigned_by: string | null
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          assigned_by?: string | null
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      valvulas: {
+        Row: {
+          controlado_por: string | null
+          created_at: string
+          estado: string
+          id: string
+          nombre: string
+          porcentaje_liquido: number | null
+          tina_id: string
+          tipo: string
+          ultima_accion: string | null
+          updated_at: string
+        }
+        Insert: {
+          controlado_por?: string | null
+          created_at?: string
+          estado?: string
+          id?: string
+          nombre: string
+          porcentaje_liquido?: number | null
+          tina_id: string
+          tipo: string
+          ultima_accion?: string | null
+          updated_at?: string
+        }
+        Update: {
+          controlado_por?: string | null
+          created_at?: string
+          estado?: string
+          id?: string
+          nombre?: string
+          porcentaje_liquido?: number | null
+          tina_id?: string
+          tipo?: string
+          ultima_accion?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["user_role"]
+        }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "admin" | "empleado"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +309,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["admin", "empleado"],
+    },
   },
 } as const

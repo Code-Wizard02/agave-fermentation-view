@@ -68,7 +68,7 @@ export function CreateSensorDialog({ tinas, onCreateSensor }: CreateSensorDialog
           
           <div className="space-y-2">
             <Label htmlFor="tipo">Tipo de Sensor</Label>
-            <Select value={tipo} onValueChange={setTipo}>
+            <Select value={tipo} onValueChange={(value) => setTipo(value as TipoSensor)}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar tipo" />
               </SelectTrigger>
