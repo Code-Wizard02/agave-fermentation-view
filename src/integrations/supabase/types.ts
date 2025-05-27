@@ -113,6 +113,107 @@ export type Database = {
         }
         Relationships: []
       }
+      sensores: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          estado: string
+          id: string
+          lectura: number | null
+          tipo: string
+          ultima_lectura: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          id?: string
+          lectura?: number | null
+          tipo: string
+          ultima_lectura?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          estado?: string
+          id?: string
+          lectura?: number | null
+          tipo?: string
+          ultima_lectura?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      tinas: {
+        Row: {
+          capacidad: number
+          created_by: string | null
+          estado: string
+          fecha_actualizacion: string
+          fecha_creacion: string
+          frecuencia_actualizacion: number | null
+          humedad: number | null
+          id: string
+          nivel_liquido: number | null
+          nombre: string
+          ph: number | null
+          sensor_id: string | null
+          temperatura: number | null
+          tipo_agave: string | null
+          ultima_actualizacion: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          capacidad: number
+          created_by?: string | null
+          estado?: string
+          fecha_actualizacion?: string
+          fecha_creacion?: string
+          frecuencia_actualizacion?: number | null
+          humedad?: number | null
+          id?: string
+          nivel_liquido?: number | null
+          nombre: string
+          ph?: number | null
+          sensor_id?: string | null
+          temperatura?: number | null
+          tipo_agave?: string | null
+          ultima_actualizacion?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          capacidad?: number
+          created_by?: string | null
+          estado?: string
+          fecha_actualizacion?: string
+          fecha_creacion?: string
+          frecuencia_actualizacion?: number | null
+          humedad?: number | null
+          id?: string
+          nivel_liquido?: number | null
+          nombre?: string
+          ph?: number | null
+          sensor_id?: string | null
+          temperatura?: number | null
+          tipo_agave?: string | null
+          ultima_actualizacion?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tinas_sensor_id_fkey"
+            columns: ["sensor_id"]
+            isOneToOne: false
+            referencedRelation: "sensores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           assigned_by: string | null
@@ -181,6 +282,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_sensores_disponibles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          tipo: string
+          estado: string
+          created_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _user_id: string

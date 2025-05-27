@@ -5,48 +5,55 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus } from "lucide-react";
-import { TipoAgave } from "@/types";
+import { Plus, Loader2 } from "lucide-react";
+import { CreateTinaData } from "@/types/database";
 
 interface CreateTinaDialogProps {
-  onCreateTina: (tinaData: {
-    nombre: string;
-    capacidad: number;
-    tipoAgave: TipoAgave | null;
-  }) => void;
+  onCreateTina: (tinaData: CreateTinaData) => Promise<void>;
+  isLoading?: boolean;
 }
 
-const tiposAgave: TipoAgave[] = [
+const tiposAgave = [
   'Espadin', 'Madre cuishe', 'Cuishe', 'Jabali', 'Mexicano', 
   'Arroqueño', 'Tobala', 'Tepextate', 'Tequilero'
 ];
 
-export function CreateTinaDialog({ onCreateTina }: CreateTinaDialogProps) {
+const capacidadesPermitidas = [1000, 1500];
+
+export function CreateTinaDialog({ onCreateTina, isLoading = false }: CreateTinaDialogProps) {
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
-  const [capacidad, setCapacidad] = useState("");
-  const [tipoAgave, setTipoAgave] = useState<TipoAgave | null>(null);
+  const [capacidad, setCapacidad] = useState<number>(1000);
+  const [tipoAgave, setTipoAgave] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (nombre && capacidad) {
-      onCreateTina({
-        nombre,
-        capacidad: parseFloat(capacidad),
-        tipoAgave
-      });
-      setOpen(false);
-      setNombre("");
-      setCapacidad("");
-      setTipoAgave(null);
+      try {
+        await onCreateTina({
+          nombre,
+          capacidad,
+          tipo_agave: tipoAgave || null
+        });
+        setOpen(false);
+        setNombre("");
+        setCapacidad(1000);
+        setTipoAgave("");
+      } catch (error) {
+        console.error('Error creating tina:', error);
+      }
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-mezcal-600 hover:bg-mezcal-700 text-white">
-          <Plus className="w-4 h-4 mr-2" />
+        <Button className="bg-mezcal-600 hover:bg-mezcal-700 text-white" disabled={isLoading}>
+          {isLoading ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <Plus className="w-4 h-4 mr-2" />
+          )}
           Crear Tina
         </Button>
       </DialogTrigger>
@@ -70,25 +77,28 @@ export function CreateTinaDialog({ onCreateTina }: CreateTinaDialogProps) {
           
           <div className="space-y-2">
             <Label htmlFor="capacidad">Capacidad (Litros)</Label>
-            <Input
-              id="capacidad"
-              type="number"
-              value={capacidad}
-              onChange={(e) => setCapacidad(e.target.value)}
-              placeholder="Ej: 1500"
-              min="1"
-              step="0.1"
-              required
-            />
+            <Select value={capacidad.toString()} onValueChange={(value) => setCapacidad(parseInt(value))}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar capacidad" />
+              </SelectTrigger>
+              <SelectContent>
+                {capacidadesPermitidas.map((cap) => (
+                  <SelectItem key={cap} value={cap.toString()}>
+                    {cap} L
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="tipoAgave">Tipo de Agave (Opcional)</Label>
-            <Select value={tipoAgave || ""} onValueChange={(value) => setTipoAgave(value as TipoAgave)}>
+            <Select value={tipoAgave} onValueChange={setTipoAgave}>
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar tipo de agave" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="">Sin asignar</SelectItem>
                 {tiposAgave.map((tipo) => (
                   <SelectItem key={tipo} value={tipo}>
                     {tipo}
@@ -102,8 +112,15 @@ export function CreateTinaDialog({ onCreateTina }: CreateTinaDialogProps) {
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancelar
             </Button>
-            <Button type="submit" className="bg-mezcal-600 hover:bg-mezcal-700">
-              Crear Tina
+            <Button type="submit" className="bg-mezcal-600 hover:bg-mezcal-700" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Creando...
+                </>
+              ) : (
+                "Crear Tina"
+              )}
             </Button>
           </div>
         </form>
